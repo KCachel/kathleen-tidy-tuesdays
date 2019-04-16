@@ -69,6 +69,6 @@ ggplot(data=united_research, aes(x=field, y=percent, fill=field_gender)) +
   geom_hline(yintercept=.50, linetype="dashed", 
              color = "red", size=2)
 
-ggsave("my_women_researcher_plot.png", width = 8, height = 7)
+ggsave("my_women_researcher_plot.png", width = 10.5, height = 8)
 
 
