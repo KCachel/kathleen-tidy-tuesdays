@@ -55,13 +55,20 @@ ggplot(data=united_research, aes(x=field, y=percent, fill=field_gender)) +
                     labels =c("Women inventors", "Physical sciences","Health sciences", "Engineering", "Computer science & Math"),
                     name = "Field:")+
   coord_flip()+
-  dark_mode(theme_fivethirtyeight( base_size = 14))+
+  theme_economist_white( base_size = 14)+
   theme(axis.text.y = element_blank(),
         legend.position = "bottom",
         strip.text.y = element_text(angle = 180),
         legend.text = element_text(size =10, face = "bold")
   )+
-  labs(x = "", y = "Percent of total field that are Women", title = "Women Among Researchers")+
-  scale_y_continuous(labels = percent)
+  labs(x = "", y = "Percent of total field that are Women",
+       title = "Still a man's world",
+       subtitle = "Women among researchers with papers published 2011-2015 *",
+       caption = "Sources: 'Gender in the Global Research Landscape' by Elsevier *Indexed in Scopus")+
+  scale_y_continuous(labels = percent)+
+  geom_hline(yintercept=.50, linetype="dashed", 
+             color = "red", size=2)
+
+ggsave("my_women_researcher_plot.png", width = 8, height = 7)
 
 
