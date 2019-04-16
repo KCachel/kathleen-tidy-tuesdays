@@ -33,6 +33,12 @@ women_research_clean$percent <- as.numeric(women_research_clean$percent)
 #union rows to make one big tidy data set
 research_clean <- union(women_research_clean, men_research_clean)
 
+
+ggplot(data=women_research_clean, aes(x=field, y=percent, fill=field)) + 
+  geom_bar(stat="identity") + 
+  
+
+
 #plotting
 d <- with(research_clean, research_clean[order(country, gender, field),])
 #d <- subset.data.frame(d, country == "Australia")
@@ -40,6 +46,10 @@ united_d <-  unite(d, field_gender, field, gender, sep = ".", remove = FALSE)
 
 ggplot(data=united_d, aes(x=field, y=percent, fill=field_gender)) + 
   geom_bar(stat="identity") + 
-  facet_grid(~country)
+  facet_grid(~country)+
+  scale_fill_manual(breaks = c("Health sciences.female", "Health sciences.male", "Physical sciences.female"),
+                    values = c("#555555", "#777777", "#555555", "#777777", "yellow",
+                               "#555555", "green", "orange", "red", "pink"))
+
 
 
