@@ -1,22 +1,28 @@
 # Kathleen Cachel
 
 library(tidyverse)
-library(wesanderson)
+library(reshape2)
+library(scales)
+library(ggdark)
+library(ggthemes)
+library(ggpomological)
+
 women_research_raw <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-04-16/Economist_women-research.csv")
 
 research_titles <- c("country",
-  "Health sciences",
-  "Physical sciences",
-  "Engineering",
-  "Computer science, maths",
-  "Women inventors")
+                     "Health sciences",
+                     "Physical sciences",
+                     "Engineering",
+                     "Computer science, maths",
+                     "Women inventors")
 
 # remove rows with NA values
 # update Column Names
 women_research_clean <- women_research_raw %>% 
   na.omit() %>% 
   set_names(nm = research_titles) %>% 
-  filter(country != "Country" & country != "Brazil" & country != "Denmark" & country !="Britain" & country != "France") %>% 
+  filter(country != "Country" & country != "Brazil" & country != "Denmark" & country !="Britain" &
+           country != "France" & country != "United Kingdom") %>% 
   gather(field, percent, `Health sciences`:`Women inventors`)
 
 #make men version
@@ -25,7 +31,7 @@ men_research_clean <- women_research_clean %>%
 
 #create new gender column
 women_research_clean$gender <- "female"
-men_research_clean$gender <- "amale"
+men_research_clean$gender <- " amale"
 
 #update type in women data frame
 women_research_clean$percent <- as.numeric(women_research_clean$percent)
@@ -33,31 +39,29 @@ women_research_clean$percent <- as.numeric(women_research_clean$percent)
 #union rows to make one big tidy data set
 research_clean <- union(women_research_clean, men_research_clean)
 
-  
+
 
 
 #plotting
-d <- with(research_clean, research_clean[order(country, gender, field),])
-#d <- subset.data.frame(d, country == "Australia")
-united_d <-  unite(d, field_gender, field, gender, sep = ".", remove = FALSE)
+united_research <-  unite(research_clean, field_gender, field, gender, sep = ".", remove = FALSE)
 
-ggplot(data=united_d, aes(x=percent, y=field, fill=field_gender)) + 
-  geom_bar(stat = "identity") + 
-  scale_fill_manual(values = c("#efedf5", "#756bb1","#e5f5e0" , "#31a354","#deebf7", "#3182bd",
-                               "#fde0dd", "#c51b8a","#fff7bc", "#d95f0e"))+
-facet_grid(country ~ .)+
 
-+
-  coord_flip()
-
-ggplot(data=united_d, aes(x=field, y=percent, fill=field_gender)) + 
+ggplot(data=united_research, aes(x=field, y=percent, fill=field_gender)) + 
   geom_bar(stat="identity") + 
-  facet_grid(~country)+
-   scale_fill_manual( values = c("#efedf5", "#756bb1","#e5f5e0" , "#31a354","#deebf7", "#3182bd",
-                                 "#fde0dd", "#c51b8a","#fff7bc", "#d95f0e"))
-
-
-breaks = c("Health sciences.female", "Health sciences.male", "Physical sciences.female"),
-
+  facet_grid(country~., switch = "y")+
+  scale_fill_manual(breaks = c("Women inventors.female", "Physical sciences.female","Health sciences.female", "Engineering.female", "Computer science, maths.female"),
+                    values = c("#efedf5", "#756bb1","#e5f5e0" , "#31a354","#deebf7", "#3182bd",
+                               "#fde0dd", "#c51b8a","#fff7bc", "#d95f0e"), 
+                    labels =c("Women inventors", "Physical sciences","Health sciences", "Engineering", "Computer science & Math"),
+                    name = "Field:")+
+  coord_flip()+
+  dark_mode(theme_fivethirtyeight( base_size = 14))+
+  theme(axis.text.y = element_blank(),
+        legend.position = "bottom",
+        strip.text.y = element_text(angle = 180),
+        legend.text = element_text(size =10, face = "bold")
+  )+
+  labs(x = "", y = "Percent of total field that are Women", title = "Women Among Researchers")+
+  scale_y_continuous(labels = percent)
 
 
