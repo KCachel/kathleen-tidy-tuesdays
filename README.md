@@ -14,3 +14,7 @@ I focused in on a few regions, and extended the pastel bars to be indicative of 
 July 23, 2019
 Birdstrikes! Looks like Texas sure is tough living for birds. 
 <img src="https://github.com/KCachel/kathleen-tidy-tuesdays/blob/master/2019-07-23/southwest.png" width="600"> 
+
+July 30, 2019
+Prices are increasing for Paradox Interactive games. 
+<img src="https://github.com/KCachel/kathleen-tidy-tuesdays/blob/master/2019-07-30/paradox.png" width="600"> 
