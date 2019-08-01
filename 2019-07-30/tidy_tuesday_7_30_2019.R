@@ -39,10 +39,6 @@ pub <- clean_df %>%
   
   
 
-ggplot(pub, aes(x = price, y = release_date, group = release_date)) + 
-  geom_density_ridges()
-
-
 ggplot(pub, aes(x = price, y = release_date, group = release_date, fill = ..x..)) + 
   geom_density_ridges_gradient() +
   scale_fill_viridis(option= 'B', name = "Game Price [$]") +
@@ -56,4 +52,5 @@ ggplot(pub, aes(x = price, y = release_date, group = release_date, fill = ..x..)
         legend.text = element_text(color = "deeppink", face = "bold"),
         plot.title = element_text(color = "deeppink", face = "bold"))
 
+ggsave("2019-07-30/paradox.png", width = 7, height = 7)
 
